@@ -27,6 +27,23 @@ function (sel_study)
 		return(data_f)
 	}
 
+	s12864=function(){
+		data=read.csv("s12864.txt",sep="\t",dec=",",header=T)
+		ix=grep("Solyc01g094190|Solyc01g101060|Solyc09g008280|Solyc10g083970|Solyc12g099000",data[,1])
+		data_f=data[ix,]
+		rownames(data_f)=data_f[,1]
+		data_f=data_f[,3:dim(data_f)[2]]
+		data_f=na.omit(data_f)
+		data_f=do_norm(data_f)
+		print(data_f)
+		pheatmap(data_f,display_numbers=TRUE)
+		pheatmap(cor(data_f),display_numbers=TRUE)
+		pheatmap(cor(t(data_f)),display_numbers=TRUE)
+		return(data_f)
+	}
+
+
+
 	s12870=function(sel_picture){
 		data=read.csv("study_1.txt",sep="\t",dec=",",row.names=1)
 		ix=grep("Solyc01g094190|Solyc01g101060|Solyc09g008280|Solyc10g083970|Solyc12g099000",rownames(data))
@@ -47,6 +64,8 @@ function (sel_study)
 		h1=mtab4818()
 	}else if(sel_study=="s12870"){
 		h1=s12870(1)
+	}else if(sel_study=="s12864"){
+		h1=s12864()
 	}else if(sel_study=="both"){
 		h1=mtab4818()
 		h2=s12870(1)
