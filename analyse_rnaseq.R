@@ -27,6 +27,21 @@ function (sel_study)
 		return(data_f)
 	}
 
+	mtab4855=function(){
+		data=read.csv("E-MTAB-4855.txt",dec=",",sep="\t",header=T)
+		print(head(data))
+		ix=grep("Solyc01g094190|Solyc01g101060|Solyc09g008280|Solyc10g083970|Solyc12g099000",data[,1])
+		data_f=data[ix,]
+		rownames(data_f)=data_f[,1]
+		data_f=data_f[,2:dim(data_f)[2]]
+		data_f=na.omit(data_f)
+		data_f=do_norm(data_f)
+		pheatmap(data_f,display_numbers=TRUE)
+		pheatmap(cor(data_f),display_numbers=TRUE)
+		pheatmap(cor(t(data_f)),display_numbers=TRUE)
+		return(data_f)
+	}
+
 	s12864=function(){
 		data=read.csv("s12864.txt",sep="\t",dec=",",header=T)
 		ix=grep("Solyc01g094190|Solyc01g101060|Solyc09g008280|Solyc10g083970|Solyc12g099000",data[,1])
@@ -66,9 +81,13 @@ function (sel_study)
 		h1=s12870(1)
 	}else if(sel_study=="s12864"){
 		h1=s12864()
+	}else if(sel_study=="mtab4855"){
+		h1=mtab4855()
 	}else if(sel_study=="both"){
 		h1=mtab4818()
 		h2=s12870(1)
+		h3=s12864()
+		h4=mtab4855()
 
 		for(x in 1:dim(h1)[1]){
 			rn=rownames(h1)[x]
@@ -82,8 +101,23 @@ function (sel_study)
 			rownames(h2)[x]=rn
 		}
 
-		print(h1)
-		print(h2)
+		for(x in 1:dim(h3)[1]){
+			rn=rownames(h3)[x]
+			rn=strsplit(rn,"gene:")[[1]][2]
+			rownames(h3)[x]=rn
+		}
+
+		for(x in 1:dim(h4)[1]){
+			rn=rownames(h4)[x]
+			rn=strsplit(rn,"\\.")[[1]][1]
+			rownames(h4)[x]=rn
+		}
+
+		print(head(h1))
+		print(head(h2))
+		print(head(h3))
+		print(head(h4))
+
 
 		uid=unique(rownames(h1),rownames(h2))
 		uid=unique(uid)
@@ -91,12 +125,15 @@ function (sel_study)
 
 		h1=h1[uid,]
 		h2=h2[uid,]
+		h3=h3[uid,]
 
 		print(dim(h1))
 		print(dim(h2))
 
 		df=data.frame(h1)
 		df=cbind(df,h2)
+		df=cbind(df,h3)
+		df=cbind(df,h4)
 		print(df)
 
 		pheatmap(df)
