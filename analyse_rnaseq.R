@@ -27,6 +27,7 @@ analyse_rnaseq=function (sel_study)
 		data_f=na.omit(data_f)
 		data_f=do_norm(data_f)
 		print("tomato fruit at four developmental stages")
+		pheatmap(data_f,filename="mtab4818.pdf")
 		print(colnames(data))
 		return(data_f)
 	}
@@ -45,6 +46,7 @@ analyse_rnaseq=function (sel_study)
 		data_f=do_norm(data_f)
 		print("root transcriptome in chilling-sensitive tomato (S. lycopersium) c.t. more cold-tolerant (S.moneymaker)")
 		print(colnames(data))
+		pheatmap(data_f,filename="mtab4855.pdf")
 		return(data_f)
 	}
 
@@ -61,6 +63,7 @@ analyse_rnaseq=function (sel_study)
 		data_f=do_norm(data_f)
 		print("role of red light in resistance to P. syringae")
 		print(colnames(data))
+		pheatmap(data_f,filename="s12864.pdf")
 		return(data_f)
 	}
 
@@ -75,6 +78,7 @@ analyse_rnaseq=function (sel_study)
 		data_f=do_norm(data_f)
 		print("low temperature that differ in freezing S. lycopersium / S. habrochaites")
 		print(colnames(data))
+		pheatmap(data_f,filename="s12870.pdf")
 		return(data_f)
 	}
 	if(sel_study=="mtab4818"){
@@ -89,6 +93,7 @@ analyse_rnaseq=function (sel_study)
 	
 		h1=mtab4818()
 		h2=s12870(1)
+		h3=s12864()
 		h4=mtab4855()
 
 		for(x in 1:dim(h1)[1]){
